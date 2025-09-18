@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -33,18 +34,22 @@ func main() {
 			arr := readIntSlice(reader, "Ingrese enteros ORDENADOS separados por espacios o comas: ")
 			target := readInt(reader, "Ingrese el valor a buscar: ")
 			if method == 1 {
+				start := time.Now()
 				idx := binarySearchIterative(arr, target)
+				dur := time.Since(start)
 				if idx >= 0 {
-					fmt.Printf("[Iterativo] Encontrado %d en índice %d\n\n", target, idx)
+					fmt.Printf("[Iterativo] Encontrado %d en índice %d | tiempo: %s\n\n", target, idx, dur)
 				} else {
-					fmt.Printf("[Iterativo] %d no encontrado\n\n", target)
+					fmt.Printf("[Iterativo] %d no encontrado | tiempo: %s\n\n", target, dur)
 				}
 			} else {
+				start := time.Now()
 				idx := binarySearchRecursive(arr, target)
+				dur := time.Since(start)
 				if idx >= 0 {
-					fmt.Printf("[Recursivo] Encontrado %d en índice %d\n\n", target, idx)
+					fmt.Printf("[Recursivo] Encontrado %d en índice %d | tiempo: %s\n\n", target, idx, dur)
 				} else {
-					fmt.Printf("[Recursivo] %d no encontrado\n\n", target)
+					fmt.Printf("[Recursivo] %d no encontrado | tiempo: %s\n\n", target, dur)
 				}
 			}
 		case "2":
@@ -53,21 +58,29 @@ func main() {
 			text, _ := reader.ReadString('\n')
 			text = strings.TrimRight(text, "\r\n")
 			if method == 1 {
+				start := time.Now()
 				res := reverseStringIterative(text)
-				fmt.Printf("[Iterativo] Invertida: %s\n\n", res)
+				dur := time.Since(start)
+				fmt.Printf("[Iterativo] Invertida: %s | tiempo: %s\n\n", res, dur)
 			} else {
+				start := time.Now()
 				res := reverseStringRecursive(text)
-				fmt.Printf("[Recursivo] Invertida: %s\n\n", res)
+				dur := time.Since(start)
+				fmt.Printf("[Recursivo] Invertida: %s | tiempo: %s\n\n", res, dur)
 			}
 		case "3":
 			// Sum array
 			arr := readIntSlice(reader, "Ingrese enteros separados por espacios o comas: ")
 			if method == 1 {
+				start := time.Now()
 				res := sumArrayIterative(arr)
-				fmt.Printf("[Iterativo] Suma = %d\n\n", res)
+				dur := time.Since(start)
+				fmt.Printf("[Iterativo] Suma = %d | tiempo: %s\n\n", res, dur)
 			} else {
+				start := time.Now()
 				res := sumArrayRecursive(arr)
-				fmt.Printf("[Recursivo] Suma = %d\n\n", res)
+				dur := time.Since(start)
+				fmt.Printf("[Recursivo] Suma = %d | tiempo: %s\n\n", res, dur)
 			}
 		default:
 			fmt.Println("Opción inválida. Intente de nuevo.")
