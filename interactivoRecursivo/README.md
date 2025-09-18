@@ -4,15 +4,14 @@ Este módulo implementa 3 problemas, cada uno resuelto de dos formas: iterativa 
 
 Algoritmos incluidos (Iterativo y Recursivo):
 - Búsqueda Binaria (índice en arreglo ordenado)
+  - Iterativo: `binarySearchIterative(arr []int, target int) int`
+  - Recursivo: `binarySearchRecursive(arr []int, target int) int`
 - Invertir cadena (soporta Unicode con `[]rune`)
+  - Iterativo: `reverseStringIterative(s string) string`
+  - Recursivo: `reverseStringRecursive(s string) string`
 - Sumar arreglo de enteros
-
-## Ejecutar
-
-```bash
-cd interactivoRecursivo
-go run .
-```
+  - Iterativo: `sumArrayIterative(arr []int) int`
+  - Recursivo: `sumArrayRecursive(arr []int) int`
 
 Sigue el menú para elegir el problema y el método (iterativo o recursivo).
 
