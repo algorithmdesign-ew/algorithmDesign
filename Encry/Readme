@@ -1,0 +1,281 @@
+# Algoritmo de Encriptación: Rotación Dinámica con Semilla
+
+## 📋 Descripción General
+
+Este algoritmo de encriptación utiliza un sistema de **rotación dinámica** donde cada letra se cifra de manera diferente según su posición en el texto. La clave principal es que usa la primera letra como "semilla" automática, haciendo que cada palabra genere un patrón único.
+
+---
+
+## 🔑 Conceptos Fundamentales
+
+### ¿Qué es la Semilla?
+
+La **semilla** es un número que se genera automáticamente a partir de la primera letra del texto:
+
+- **A** = 1
+- **B** = 2
+- **C** = 3
+- ...
+- **Z** = 26
+
+**Ejemplo:**
+- Texto: `Edison` → Primera letra: `E` → Semilla: **5**
+- Texto: `Hola` → Primera letra: `H` → Semilla: **8**
+
+---
+
+## 🔐 Proceso de Cifrado
+
+### Fórmula General
+
+Para cada letra en el texto:
+
+```
+Posición_Cifrada = (Posición_Original + Semilla + Índice) mod 26
+```
+
+Donde:
+- **Posición_Original**: posición de la letra en el alfabeto (A=1, B=2, ..., Z=26)
+- **Semilla**: valor de la primera letra
+- **Índice**: posición de la letra en el texto (empieza en 0)
+- **mod 26**: para mantener el resultado dentro del alfabeto (1-26)
+
+### Proceso Paso a Paso
+
+#### Ejemplo: Cifrar "Edison"
+
+**Paso 1:** Calcular la semilla
+- Primera letra: `E` = 5
+- **Semilla = 5**
+
+**Paso 2:** Cifrar cada letra
+
+| Letra | Posición Original | Índice | Cálculo | Resultado | Letra Cifrada |
+|-------|-------------------|--------|---------|-----------|---------------|
+| E     | 5                 | 0      | (5 + 5 + 0) mod 26 = 10 | 10 | **J** |
+| d     | 4                 | 1      | (4 + 5 + 1) mod 26 = 10 | 10 | **j** |
+| i     | 9                 | 2      | (9 + 5 + 2) mod 26 = 16 | 16 | **p** |
+| s     | 19                | 3      | (19 + 5 + 3) mod 26 = 27 → 1 | 1 | **a** |
+| o     | 15                | 4      | (15 + 5 + 4) mod 26 = 24 | 24 | **x** |
+| n     | 14                | 5      | (14 + 5 + 5) mod 26 = 24 | 24 | **x** |
+
+**Paso 3:** Formato final
+```
+5-Jjpaxx
+```
+El formato es: `SEMILLA-TEXTOCIFRADO`
+
+---
+
+## 🔓 Proceso de Descifrado
+
+### Fórmula Inversa
+
+Para descifrar, invertimos la operación:
+
+```
+Posición_Original = (Posición_Cifrada - Semilla - Índice) mod 26
+```
+
+### Proceso Paso a Paso
+
+#### Ejemplo: Descifrar "5-Jjpaxx"
+
+**Paso 1:** Extraer la semilla
+- Texto cifrado: `5-Jjpaxx`
+- **Semilla = 5**
+- Texto a descifrar: `Jjpaxx`
+
+**Paso 2:** Descifrar cada letra
+
+| Letra Cifrada | Posición Cifrada | Índice | Cálculo | Ajuste* | Letra Original |
+|---------------|------------------|--------|---------|---------|----------------|
+| J             | 10               | 0      | 10 - 5 - 0 = 5 | 5 | **E** |
+| j             | 10               | 1      | 10 - 5 - 1 = 4 | 4 | **d** |
+| p             | 16               | 2      | 16 - 5 - 2 = 9 | 9 | **i** |
+| a             | 1                | 3      | 1 - 5 - 3 = -7 | -7 + 26 = 19 | **s** |
+| x             | 24               | 4      | 24 - 5 - 4 = 15 | 15 | **o** |
+| x             | 24               | 5      | 24 - 5 - 5 = 14 | 14 | **n** |
+
+*Si el resultado es negativo o cero, sumamos 26 hasta obtener un valor positivo entre 1-26.
+
+**Paso 3:** Resultado final
+```
+Edison
+```
+
+---
+
+## 📝 Cómo Cifrar Manualmente
+
+### Materiales necesarios:
+- Papel y lápiz
+- Tabla del alfabeto con valores (A=1, B=2, ..., Z=26)
+
+### Pasos:
+
+1. **Identifica la primera letra** y anota su valor (esa es tu semilla)
+
+2. **Para cada letra del texto:**
+   - Anota su posición en el alfabeto
+   - Anota su índice (posición en el texto, empezando en 0)
+   - Aplica la fórmula: `(posición + semilla + índice)`
+   - Si el resultado es mayor a 26, réstale 26 hasta que esté entre 1-26
+   - Convierte el número resultante a letra
+
+3. **Escribe el resultado** en formato: `SEMILLA-TEXTOCIFRADO`
+
+### Ejemplo rápido: "Hola"
+
+```
+H = 8 (semilla)
+
+H: (8 + 8 + 0) = 16 → P
+o: (15 + 8 + 1) = 24 → x
+l: (12 + 8 + 2) = 22 → v
+a: (1 + 8 + 3) = 12 → l
+
+Resultado: 8-Pxvl
+```
+
+---
+
+## 🔍 Cómo Descifrar Manualmente
+
+### Pasos:
+
+1. **Separa la semilla del texto cifrado**
+   - Ejemplo: `5-Jjpaxx` → Semilla = 5, Texto = `Jjpaxx`
+
+2. **Para cada letra cifrada:**
+   - Anota su posición en el alfabeto
+   - Anota su índice (posición en el texto, empezando en 0)
+   - Aplica la fórmula: `(posición_cifrada - semilla - índice)`
+   - Si el resultado es negativo o cero, súmale 26
+   - Si sigue siendo mayor a 26, réstale 26
+   - Convierte el número resultante a letra
+
+3. **Escribe el resultado** respetando mayúsculas/minúsculas del original
+
+### Ejemplo rápido: "8-Pxvl"
+
+```
+Semilla = 8
+
+P: (16 - 8 - 0) = 8 → H
+x: (24 - 8 - 1) = 15 → o
+v: (22 - 8 - 2) = 12 → l
+l: (12 - 8 - 3) = 1 → a
+
+Resultado: Hola
+```
+
+---
+
+## 🎯 Características Especiales
+
+### ✅ Respeto de Mayúsculas/Minúsculas
+- `Edison` → `5-Jjpaxx` (mantiene mayúscula inicial)
+- `EDISON` → `5-JJPAXX` (todo mayúsculas)
+- `edison` → `5-jjpaxx` (todo minúsculas)
+
+### ✅ Caracteres No Alfabéticos
+Los números, espacios y símbolos se mantienen sin cambios:
+- `Hola123` → `8-Pxvl123`
+- `Hola Mundo` → `8-Pxvl Vbypv`
+
+### ✅ Ventajas del Algoritmo
+1. **Cada posición tiene cifrado diferente**: La misma letra se cifra diferente según dónde esté
+2. **Semilla automática**: No necesitas recordar una clave externa
+3. **Reversible**: Puedes descifrar exactamente al texto original
+4. **Simple pero efectivo**: Fácil de entender pero difícil de romper sin conocer el patrón
+
+---
+
+## 📊 Tabla de Referencia Rápida
+
+### Alfabeto con Valores
+
+| Letra | Valor | Letra | Valor | Letra | Valor |
+|-------|-------|-------|-------|-------|-------|
+| A/a   | 1     | J/j   | 10    | S/s   | 19    |
+| B/b   | 2     | K/k   | 11    | T/t   | 20    |
+| C/c   | 3     | L/l   | 12    | U/u   | 21    |
+| D/d   | 4     | M/m   | 13    | V/v   | 22    |
+| E/e   | 5     | N/n   | 14    | W/w   | 23    |
+| F/f   | 6     | O/o   | 15    | X/x   | 24    |
+| G/g   | 7     | P/p   | 16    | Y/y   | 25    |
+| H/h   | 8     | Q/q   | 17    | Z/z   | 26    |
+| I/i   | 9     | R/r   | 18    |       |       |
+
+---
+
+## 🚀 Uso del Programa
+
+### Instalación
+```bash
+# Guardar el código en main.go
+go run main.go
+```
+
+### Menú de Opciones
+```
+=== ALGORITMO DE ENCRIPTACIÓN ===
+1. Cifrar
+2. Descifrar
+3. Salir
+```
+
+### Ejemplo de Uso
+```
+Seleccione una opción: 1
+Ingrese el texto a cifrar: Edison
+
+✓ Texto cifrado: 5-Jjpaxx
+
+Seleccione una opción: 2
+Ingrese el texto cifrado: 5-Jjpaxx
+
+✓ Texto descifrado: Edison
+```
+
+---
+
+## 🧮 Ejercicios de Práctica
+
+### Nivel Básico
+1. Cifra: `Ana`
+2. Descifra: `2-Boc`
+
+### Nivel Intermedio
+3. Cifra: `Secreto`
+4. Descifra: `3-Vhfuhwr`
+
+### Nivel Avanzado
+5. Cifra: `MensajeSecreto123`
+6. Descifra: `13-Zragdawgufhbr123`
+
+---
+
+## 📌 Notas Importantes
+
+- La semilla **siempre** se calcula de la primera letra alfabética
+- El índice **siempre** comienza en 0
+- Si un cálculo da número negativo, suma 26
+- Si un cálculo da más de 26, resta 26
+- Las mayúsculas/minúsculas se preservan en el cifrado
+
+---
+
+## 🔒 Seguridad
+
+**Advertencia:** Este es un algoritmo educativo. No es criptográficamente seguro para proteger información sensible. Para uso en producción, utiliza algoritmos estándar como AES, RSA, o similar.
+
+**Fortalezas:**
+- Cada posición tiene cifrado diferente
+- Difícil de romper sin conocer el algoritmo
+
+**Debilidades:**
+- La semilla es visible en el texto cifrado
+- Vulnerable a análisis de frecuencia si se conoce el algoritmo
+- No usa clave externa adicional
